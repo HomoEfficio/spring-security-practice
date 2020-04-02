@@ -22,14 +22,16 @@ import java.io.IOException;
 @Slf4j
 public class SimpleUsernamePasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+    public SimpleUsernamePasswordAuthFilter(AuthenticationManager manager) {
+        setAuthenticationManager(manager);
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = obtainUsername(request);
         String password = obtainPassword(request);
         log.info("username: {}, password: {}", username, password);
-        return authenticationManager.authenticate(
+        return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
     }
